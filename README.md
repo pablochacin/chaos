@@ -1,15 +1,17 @@
-# Use ephemeral containers for chaos
+# Pod Chaos
 
-[Ephemeral containers](https://kubernetes.io/docs/concepts/workloads/pods/ephemeral-containers/) are containers that can be added to running pods. They are intended to be used for debugging purposes (for example, the [`kubectl debug`](https://kubernetes.io/docs/tasks/debug-application-cluster/debug-running-pod/#ephemeral-container) command adds an ephemeral container).
-
-This project explores using ephemeral containers for chaos engineering. The main rationale for this approach is to be able to inject chaos behavior to specific pods without affecting other pods deployed in the same cluster.
+This project explores ideas for injecting chaos behavior to specific pods without affecting other pods deployed in the same cluster. For doing so, this project uses ephemeral containers as a mechanims for adding new behavior to a running pod. 
 
 Some uses cases that could be covered with this approach:
 * Disconnect temporarily a replica of a database from the network without killing it and reconnect it after some time.
 * Introduces delays in the responses from a service
 * Introduce package loss in the communication between pods
 
-For implementing these features we use an ephemeral container with the following tools: 
+## Use ephemeral containers for chaos
+
+[Ephemeral containers](https://kubernetes.io/docs/concepts/workloads/pods/ephemeral-containers/) are containers that can be added to running pods. They are intended to be used for debugging purposes (for example, the [`kubectl debug`](https://kubernetes.io/docs/tasks/debug-application-cluster/debug-running-pod/#ephemeral-container) command adds an ephemeral container).
+
+In order to implement chaos behaviors into a pod we use an ephemeral container with the following tools: 
 
 * [netem (network emulator)](https://man7.org/linux/man-pages/man8/tc-netem.8.html) to introduce network chaos (delays, package loss)
 
