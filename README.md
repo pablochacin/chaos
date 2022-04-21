@@ -21,12 +21,12 @@ This project must be considered an educational tool. It can be used for small-sc
 
 * If the pod already has an ephemeral container (for example, because it was debugged using the `kubectl debug` command) the chaos agent cannot be installed and `/pod-chaos install` command will fail this this message:
 
-```
-The Pod <pod name> is invalid: spec.ephemeralContainers: Forbidden: existing ephemeral containers <container name>  may not be removed
-```
+   ```
+   The Pod <pod name> is invalid: spec.ephemeralContainers: Forbidden: existing ephemeral containers <container name>  may not be removed
+   ```
+* The `chaos-agent` container needs to run with `NET_ADMIN` and `NET_RAW` capabilities. 
 
 ### Roadmap
-
 [ ] Add command to disconnect pod from the network
 [ ] Add command to kill a container in the pod
 [ } Add command to consume pod resources (cpu, memory)
