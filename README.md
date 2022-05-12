@@ -78,13 +78,13 @@ $ kubectl run -ti ab --image chaos-tools --image-pull-policy=IfNotPresent
 
 Before running experiments you must install the chaos agent in the target pod:
 ```
-$ ./pod-chaos install -p nginx
+$ ./pod-chaos.sh install -p nginx
 chaos agent installed.
 ```
 
 Open another terminal and check the response from the nginx pod:
 ```sh
-$ docker run -it -rm chaos-tools ab -n 10 http://172.17.0.3/ 
+$ ab -n 10 -S -d -k http://172.17.0.3/ 
 This is ApacheBench, Version 2.3 <$Revision: 1879490 $>
 Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
 Licensed to The Apache Software Foundation, http://www.apache.org/
@@ -120,7 +120,7 @@ Total:          0     3   24
 
 To run an experiment introducing a delay of 100ms for a duration of 30 seconds:
 ```sh
-pod-chaos disrupt -p nginx -d 100 -r 30 
+./pod-chaos.sh disrupt -p nginx -d 100 -r 30 
 ```
 
 In the other terminal run again the ab command:
