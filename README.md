@@ -52,6 +52,7 @@ $ docker build -t chaos-tools tools/
 $ minikube image load chaos-agent
 $ minikube image load chaos-tools
 ```
+> **Note**: Use imagePullPolicy=IfNotPresent or imagePullPolicy=Never when starting a pod with these images. Otherwise Kubernetes won’t use the image loaded into minikube and will try to pull it from the network.
 
 ## Usage
 
@@ -72,7 +73,7 @@ nginx   1/1     Running   0          5m    172.17.0.3   minikube   <none>       
 
 For this example we will use Apache benchmark tool available in the `chaos-tools` image:
 ```sh
-$ kubectl run -ti ab chaos-tools 
+$ kubectl run -ti ab --image chaos-tools --image-pull-policy=IfNotPresent
 ``` 
 
 Before running experiments you must install the chaos agent in the target pod:
