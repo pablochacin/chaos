@@ -63,12 +63,18 @@ Start the pod:
 $ kubectl run nginx --image nginx
 ```
 
-Get the ip address of the pod 
+Let's also start a control pod which we will not disrupt
+```sh
+$ kubectl run nginx2 --image nginx
+```
+
+Get the ip address of the pods 
 ```sh
 $ kubectl get pod nginx -o wide
 kubectl get pod nginx -o wide
 NAME    READY   STATUS    RESTARTS   AGE   IP           NODE       NOMINATED NODE   READINESS GATES
 nginx   1/1     Running   0          5m    172.17.0.3   minikube   <none>           <none>
+nginx2  1/1     Running   0          5m    172.17.0.4   minikube   <none>           <none>
 ```
 
 For this example we will use Apache benchmark tool available in the `chaos-tools` image:
@@ -120,7 +126,7 @@ Total:          0     3   24
 
 To run an experiment introducing a delay of 100ms for a duration of 30 seconds:
 ```sh
-./pod-chaos.sh disrupt -p nginx -d 100 -r 30 
+./pod-chaos.sh disrupt -p nginx -d 100 -r 60 
 ```
 
 In the other terminal run again the ab command:
@@ -160,3 +166,8 @@ Waiting:      100   100  101
 Total:        100   111  201
 ```
 **Note:** notice the `-k` option in the `ab` command. This option uses http keep-alive to reuse the connection across requests. If not used, each requests will stablish a connection and the observed delay would be the double of the one specified in the experiment.
+
+Run again the command against the control pod. You will see traffic is unaffected.
+```sh
+$ ab -n 10 -S -d -k http://172.17.0.4/
+```
