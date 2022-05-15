@@ -39,7 +39,7 @@ function install() {
 
 function disrupt() {
     AGENT_OPTS="$DELAY $VARIATION $IFACE $WARM_UP $RUNNING_TIME"
-    kubectl -n $NAMESPACE exec $POD -c chaos  -- chaos-agent.sh $AGENT_OPTS
+    kubectl -n $NAMESPACE exec $INTERACTIVE $POD -c chaos  -- sh -c "chaos-agent.sh $AGENT_OPTS $BACKGROUND"
 }
 
 function usage() {
@@ -58,6 +58,7 @@ cat <<EOF
       -h,--help: display this help
       -n,--namesapce: namespace where the pod runs
       -p,--pod: pod to disturb
+      -b,--backgrund: run command in background
       INSTALL:
       -g,--image: image tobe used for launching the chaos agent container (default 'chaos-agent')
       DISRUPT: 
@@ -91,6 +92,10 @@ function parse_args() {
 
     while [[ $# != 0 ]] ; do
         case $1 in
+            -b|--background)
+		BACKGROUND="&"
+                INTERACTIVE=
+                ;;
             -d|--delay)
                 DELAY="-d $2"
                 shift
@@ -146,6 +151,8 @@ IMAGE="chaos-agent"
 POD=
 NAMESPACE="default"
 CMD=
+BACKGROUND=
+INTERACTIVE="-ti"
 
 parse_args $@
 
